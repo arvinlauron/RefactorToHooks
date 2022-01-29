@@ -4,10 +4,10 @@ import { v4 as uuid } from "uuid";
 import "./App.css";
 
 const postsArray = [
-  { id: 1, name: "Gian", content: "Gwapa kay ka", likes: 2 },
-  { id: 2, name: "Shad", content: "Pogi ko", likes: 1 },
-  { id: 3, name: "Carlos", content: "Hanging around", likes: 3 },
-  { id: 4, name: "Reyner", content: "Pagod na ako!", likes: 4 },
+  { id: 1, name: "Gian", content: "Gwapa kay ka", likes: 2, isHidden: false },
+  { id: 2, name: "Shad", content: "Pogi ko", likes: 1, isHidden: false },
+  { id: 3, name: "Carlos", content: "Hanging around", likes: 3, isHidden: false },
+  { id: 4, name: "Reyner", content: "Pagod na ako!", likes: 4, isHidden: false },
 ];
 
 function App () {
@@ -18,28 +18,42 @@ function App () {
     const id = unique_id.slice(0, 8);
     const [posts ,setPosts] = useState(postsArray);
     const [isShow, setIsShow] = useState(true);
+    const [buttonText, setButtonText] = useState(true);
   
     
   
     const handleSubmit = (e) => {
       e.preventDefault();
-      const data = {id, name, content, likes: 0 };
-      if (posts.length< 10) {
+      const data = {id, name, content, likes: 0, isHidden: false};
+      if (posts.length < 10) {
         setPosts((posts) => [...posts, data]);
         SetName("");
         SetContent("");
       }
     };
  
+    const handleHidePost = (postId) => {
+      const handlePost = posts.filter(post=>post.id === postId)[0]
+      handlePost.isHidden = true
+      setPosts([...posts, handlePost])
+      console.log(handlePost)
+    }
   
   const handleClick = () => {
     setIsShow(!isShow);
+    handleChange();
   };
+
+  const handleChange = () =>{
+      setButtonText(!buttonText)
+   
+  }; 
+  
   
   return(
  
       <div className="container justify-content-center mt-5 border-left border-right" >
-        <span><button className="btn btn-secondary btn-lg btn-block" onClick={handleClick}>HideAllPost</button></span>  
+        <button className="btn btn-secondary btn-lg" onClick={handleClick}>{buttonText ? "HidellPost" : "ShowAllPost"}</button>
            <h1>Comment Here</h1>
            
            <div className="d-flex justify-content-center py-2">
@@ -68,7 +82,7 @@ function App () {
           
         {isShow ?
           posts.map((post)=>(
-            <Post key={post.id} name ={post.name} content={post.content} likes={post.likes} />
+            post.isHidden ? null :<Post key={post.id} id={post.id} name ={post.name} content={post.content} likes={post.likes} handleHidePost ={handleHidePost}  /> 
           )):null} 
           
       </div> 
