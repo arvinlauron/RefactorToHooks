@@ -18,7 +18,7 @@ function App () {
     const [name, SetName] = useState("");
     const [content, SetContent] = useState("");
     const [posts ,setPosts] = useState(postsArray);
-    const [isShow, setIsShow] = useState(true);
+    const [isShow, setIsShow] = useState(false);
     const [buttonText, setButtonText] = useState(true);
   
     
@@ -45,17 +45,12 @@ function App () {
       const handlePost = posts.filter(post=>post.id === postId)[0]
       handlePost.isHidden = true
       setPosts([...posts, handlePost])
-     
     }
   
   const handleClick = () => {
     setIsShow(!isShow);
     handleChange();
-   
- 
   };
-
-  
 
   const handleChange = () =>{
       setButtonText(!buttonText)
@@ -94,10 +89,10 @@ function App () {
           </form>
         </div>
           
-        {isShow ?
+        {isShow ? null: 
           posts.map((post)=>(
             post.isHidden ? null :<Post key={post.id} id={post.id} name ={post.name} content={post.content} likes={post.likes} handleHidePost ={handleHidePost}  /> 
-          )):null} 
+          ))}
           
       </div> 
   
