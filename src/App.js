@@ -20,6 +20,7 @@ function App () {
     const [posts ,setPosts] = useState(postsArray);
     const [isShow, setIsShow] = useState(false);
     const [buttonText, setButtonText] = useState(true);
+    const [visible, setVisible] = useState(10)
   
     
   
@@ -28,17 +29,10 @@ function App () {
       const id = unique_id.slice(0, 8);
       e.preventDefault();
       const data = {id, name, content, likes: 0, isHidden: false};
-      if (posts.length < 10) {
         setPosts((posts) => [...posts, data]);
         SetName("");
         SetContent("");
-      }else{
-        const data = {id, name, content, likes: 0, isHidden: true}; 
-        setPosts((posts) => [...posts, data]);
-        SetName("");
-        SetContent("");
-      }
-
+      
     };
  
     const handleHidePost = (postId) => {
@@ -50,19 +44,23 @@ function App () {
   const handleClick = () => {
     setIsShow(!isShow);
     handleChange();
+    
   };
 
   const handleChange = () =>{
       setButtonText(!buttonText)
   }; 
   
- 
+ const loadMore = () => {
+   setVisible(visible + 10)
+ }
   
   
   return(
  
       <div className="container justify-content-center mt-5 border-left border-right" >
         <button className="btn btn-secondary btn-lg" onClick={handleClick}>{buttonText ? "HidellPost" : "ShowAllPost"}</button>
+    
            <h1>Comment Here</h1>
            
            <div className="d-flex justify-content-center py-2">
@@ -86,11 +84,13 @@ function App () {
             />
               <br/>
             <button className="btn btn-primary btn-lg btn-block">Post</button>
+
+            <button onClick={loadMore} className="btn btn-success btn-lg btn-block">loadMore</button>
           </form>
         </div>
           
         {isShow ? null: 
-          posts.map((post)=>(
+          posts.slice(0,visible).map((post)=>(
             post.isHidden ? null :<Post key={post.id} id={post.id} name ={post.name} content={post.content} likes={post.likes} handleHidePost ={handleHidePost}  /> 
           ))}
           
