@@ -3,19 +3,20 @@ import Post from "./Post";
 import { v4 as uuid } from "uuid";
 import "./App.css";
 
-const postsArray = [
-  { id: 1, name: "Gian", content: "Gwapa kay ka", likes: 2, isHidden: false },
-  { id: 2, name: "Shad", content: "Pogi ko", likes: 1, isHidden: false },
-  { id: 3, name: "Carlos", content: "Hanging around", likes: 3, isHidden: false },
-  { id: 4, name: "Reyner", content: "Pagod na ako!", likes: 4, isHidden: false },
-];
+
 
 function App () {
 
+  const postsArray = [
+    
+    { id: uuid().slice(0,8), name: "Gian", content: "Gwapa kay ka", likes: 2, isHidden: false },
+    { id: uuid().slice(0,8), name: "Shad", content: "Pogi ko", likes: 1, isHidden: false },
+    { id: uuid().slice(0,8), name: "Carlos", content: "Hanging around", likes: 3, isHidden: false },
+    { id: uuid().slice(0,8), name: "Reyner", content: "Pagod na ako!", likes: 4, isHidden: false },
+  ];
+
     const [name, SetName] = useState("");
     const [content, SetContent] = useState("");
-    const unique_id = uuid();
-    const id = unique_id.slice(0, 8);
     const [posts ,setPosts] = useState(postsArray);
     const [isShow, setIsShow] = useState(true);
     const [buttonText, setButtonText] = useState(true);
@@ -23,31 +24,44 @@ function App () {
     
   
     const handleSubmit = (e) => {
+      const unique_id = uuid();
+      const id = unique_id.slice(0, 8);
       e.preventDefault();
       const data = {id, name, content, likes: 0, isHidden: false};
       if (posts.length < 10) {
         setPosts((posts) => [...posts, data]);
         SetName("");
         SetContent("");
+      }else{
+        const data = {id, name, content, likes: 0, isHidden: true}; 
+        setPosts((posts) => [...posts, data]);
+        SetName("");
+        SetContent("");
       }
+
     };
  
     const handleHidePost = (postId) => {
       const handlePost = posts.filter(post=>post.id === postId)[0]
       handlePost.isHidden = true
       setPosts([...posts, handlePost])
-      console.log(handlePost)
+     
     }
   
   const handleClick = () => {
     setIsShow(!isShow);
     handleChange();
+   
+ 
   };
+
+  
 
   const handleChange = () =>{
       setButtonText(!buttonText)
-   
   }; 
+  
+ 
   
   
   return(
